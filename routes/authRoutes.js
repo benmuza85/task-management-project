@@ -2,7 +2,7 @@
 const express = require('express');
 const passport = require('passport');
 const User = require('../models/User');
-const CLIENT_URL = "http://localhost:3000/"
+const CLIENT_URL = "https://task-management-benson-cda7d51e8621.herokuapp.com/"
 
 const router = express.Router();
 
