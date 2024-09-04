@@ -1,42 +1,46 @@
 // src/config/passport.js
 const passport = require('passport');
-// const LocalStrategy = require('passport-local').Strategy;
+const LocalStrategy = require('passport-local').Strategy;
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
-// const FacebookStrategy = require('passport-facebook').Strategy;
 const User = require('../models/User');
 
 passport.serializeUser((user, done) => {
-  done(null, user.id);
+  console.log('Serialize',user);
+  done(null, user._id);
 });
 
 passport.deserializeUser(async (id, done) => {
   try {
+    console.log(id)
     const user = await User.findById(id);
+    console.log('Deserial',user);
     done(null, user);
   } catch (err) {
     done(err, null);
   }
 });
 
-// // Local Strategy
-// passport.use(
-//   new LocalStrategy(
-//     { usernameField: 'email' },
-//     async (email, password, done) => {
-//       try {
-//         const user = await User.findOne({ email });
-//         if (!user) return done(null, false, { message: 'Incorrect email.' });
-
-//         const isMatch = await user.isValidPassword(password);
-//         if (!isMatch) return done(null, false, { message: 'Incorrect password.' });
-
-//         return done(null, user);
-//       } catch (err) {
-//         return done(err);
-//       }
-//     }
-//   )
-// );
+// Local Strategy
+passport.use(
+  new LocalStrategy(
+    { usernameField: 'email',
+      passwordField:'password'
+    },
+    async (email, password, done) => {
+      try {
+        const user = await User.findOne({ email });
+        if (!user) return done(null, false, { message: 'Incorrect email.' });
+        
+        const isMatch = await user.isValidPassword(password);
+        if (!isMatch) return done(null, false, { message: 'Incorrect password.' });
+        
+        return done(null, user);
+      } catch (err) {
+        return done(err);
+      }
+    }
+  )
+);
 
 // Google Strategy
 passport.use(

@@ -4,6 +4,7 @@ const path = require('path');
 const cors = require('cors');
 const connectDB = require('./config/db');
 const taskRoutes = require('./routes/taskRoutes');
+const flash = require('connect-flash');
 const session = require('express-session');
 const passport = require('./config/passport');
 
@@ -18,14 +19,21 @@ app.use(express.urlencoded({ extended: true }));
 
 
 app.use(session({
-  secret: process.env.SESSION_SECRET,
+  secret: process.env.SESSION_SECRET || 'my little secrect',
   resave: false,
-  saveUninitialized: false,
+  saveUninitialized: true,
 }))
 
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(cors());
+app.use(flash());
+app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
+
+app.use((req, res, next)=>{
+    console.log(req.user)
+    console.log(`METHOD ${req.method} ${req.url}`);
+    next()
+})
 
 // Routes for authentication
 app.use('/auth', require('./routes/authRoutes'));
@@ -33,13 +41,13 @@ app.use('/auth', require('./routes/authRoutes'));
 app.use('/api', taskRoutes);
 
 app.use(express.static(path.join(__dirname,'client', 'build')))
-app.get('/*', (req, res)=>{
-    res.sendFile(path.join(__dirname,'client','build','index.html'), (err)=>{
-        if(err){
-            res.status(500).send(err)
-        }
-    })
-})
+// app.get('/*', (req, res)=>{
+//     res.sendFile(path.join(__dirname,'client','build','index.html'), (err)=>{
+//         if(err){
+//             res.status(500).send(err)
+//         }
+//     })
+// })
 
 const PORT = process.env.PORT || 5000;
 

@@ -15,7 +15,6 @@ const App = () => {
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
-    fetchTasks();
     fetchUser();
   }, []);
 
@@ -27,7 +26,12 @@ const App = () => {
     setFilteredTasks(filtered);
   }, [searchTerm, tasks]);
 
+  useEffect(()=>{
+    fetchTasks()
+  }, [user])
+
   const fetchTasks = async () => {
+    if (!user) return;
     try {
       const response = await fetch('/api/tasks');
       const data = await response.json();
@@ -69,7 +73,7 @@ const App = () => {
               </div>
             </div>
           ) : (
-            <Login/>
+            <Login fetchTasks={fetchTasks} setUser={setUser}/>
           )}
         />
       </Routes>

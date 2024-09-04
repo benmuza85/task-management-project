@@ -35,7 +35,7 @@ const Header = ({ user, setUser, onSearch }) => {
 
           {user && (
             <>
-              <span>Welcome, {user.name}</span>
+              <span>Welcome, {user.name ||  user.username}</span>
               <button
                 onClick={handleLogout}
                 className="bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600"

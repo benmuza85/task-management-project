@@ -4,7 +4,8 @@ const Task = require('../models/Task');
 // Get all tasks
 exports.getTasks = async (req, res) => {
   try {
-    const tasks = await Task.find();
+    console.log('User: ',req.user)
+    const tasks = await Task.find({userID:req.user._id});
     res.json(tasks);
   } catch (error) {
     res.status(500).json({ message: 'Server Error' });
@@ -24,6 +25,7 @@ exports.createTask = async (req, res) => {
       status,
       assignees,
       project,
+      userID:req.user._id
     });
 
     const savedTask = await newTask.save();
