@@ -27,7 +27,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
-app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
+app.use(cors({credentials: true, origin: 'https://task-management-benson-cda7d51e8621.herokuapp.com/'}));
 
 app.use((req, res, next)=>{
     console.log(req.user)

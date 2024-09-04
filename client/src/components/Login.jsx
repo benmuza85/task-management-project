@@ -13,7 +13,7 @@ const Login = ({fetchTasks, setUser}) => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:5000/auth/login', {
+      const response = await fetch('https://task-management-benson-cda7d51e8621.herokuapp.com/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json'  },
         credentials:'include',
@@ -37,7 +37,7 @@ const Login = ({fetchTasks, setUser}) => {
   const handleSignup = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:5000/auth/register', {
+      const response = await fetch('https://task-management-benson-cda7d51e8621.herokuapp.com/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name: username, email, password }),
@@ -174,7 +174,7 @@ const Login = ({fetchTasks, setUser}) => {
 
         <div className="mt-6 text-center">
           <a
-            href="http://localhost:5000/auth/google"
+            href="https://task-management-benson-cda7d51e8621.herokuapp.com/auth/google"
             className="w-full block text-center bg-red-500 text-white py-3 px-4 rounded-md hover:bg-red-600 transition duration-300"
           >
             Login with Google
