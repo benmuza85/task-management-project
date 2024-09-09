@@ -1,4 +1,6 @@
 // src/index.js
+const dotenv = require('dotenv');
+dotenv.config();
 const express = require('express');
 const path = require('path');
 const cors = require('cors');
@@ -7,6 +9,7 @@ const taskRoutes = require('./routes/taskRoutes');
 const flash = require('connect-flash');
 const session = require('express-session');
 const passport = require('./config/passport');
+
 
 
 // Connect to MongoDB
@@ -40,6 +43,7 @@ app.use('/auth', require('./routes/authRoutes'));
 
 app.use('/api', taskRoutes);
 
+//set to run in production mode
 app.use(express.static(path.join(__dirname,'client', 'build')))
 app.get('/*', (req, res)=>{
     res.sendFile(path.join(__dirname,'client','build','index.html'), (err)=>{
