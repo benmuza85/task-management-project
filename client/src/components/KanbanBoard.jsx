@@ -1,53 +1,11 @@
 // src/components/KanbanBoard.js
-import React, { useState, useEffect } from 'react';
-
 const KanbanBoard = ({ tasks, setTasks, selectedProject }) => {
-  const [newTask, setNewTask] = useState({
-    title: '',
-    dueDate: '',
-    assignees: [],
-    priority: 'Medium',
-    status: 'To Do',
-  }); // State to hold new task details
 
   const filteredTasks = selectedProject
     ? tasks.filter((task) => task.project === selectedProject)
     : tasks;
 
-  // Handle new task input change
-  const handleTaskInputChange = (e) => {
-    const { name, value } = e.target;
-    setNewTask((prevTask) => ({
-      ...prevTask,
-      [name]: value,
-      project: selectedProject || '', // Assign to selected project or empty string if none selected
-    }));
-  };
 
-  // Add a new task to the Kanban board
-  const handleAddTask = async () => {
-    try {
-      const response = await fetch('/api/tasks', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(newTask),
-      });
-
-      const savedTask = await response.json();
-      setTasks([...tasks, savedTask]);
-      setNewTask({
-        title: '',
-        dueDate: '',
-        assignees: [],
-        priority: 'Medium',
-        status: 'To Do',
-      }); // Reset task form
-    } catch (error) {
-      console.error('Error creating task:', error);
-    }
-  };
 
   const handleDragStart = (e, taskId, currentStatus) => {
     e.dataTransfer.setData('taskId', taskId);

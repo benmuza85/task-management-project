@@ -1,6 +1,6 @@
 // src/App.js
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import Header from './components/Header';
 import TaskDashboard from './components/TaskDashboard';
 import ProjectView from './components/ProjectView';
@@ -61,6 +61,7 @@ const App = () => {
     <Router>
       <Routes>
         {/* Protect the main route */}
+        {/* {console.log('Node env HHMMMM baby: '+process.env.NODE_ENV)} */}
         <Route
           path="/"
           element={user ? (

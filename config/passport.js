@@ -7,15 +7,12 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const User = require('../models/User');
 
 passport.serializeUser((user, done) => {
-  console.log('Serialize',user);
   done(null, user._id);
 });
 
 passport.deserializeUser(async (id, done) => {
   try {
-    console.log(id)
     const user = await User.findById(id);
-    console.log('Deserial',user);
     done(null, user);
   } catch (err) {
     done(err, null);
@@ -50,7 +47,7 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: 'https://task-management-benson-cda7d51e8621.herokuapp.com/auth/google/callback',
+      callbackURL: process.env.NODE_ENV==='production'?'https://task-management-benson-cda7d51e8621.herokuapp.com/auth/google/callback':'http://localhost:5000/auth/google/callback',
       scope:["profile", "email"]
     },
     async (token, tokenSecret, profile, done) => {

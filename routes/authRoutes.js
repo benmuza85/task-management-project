@@ -1,8 +1,10 @@
 // src/routes/authRoutes.js
+const dotenv = require('dotenv');
+dotenv.config();
 const express = require('express');
 const passport = require('passport');
 const User = require('../models/User');
-const CLIENT_URL = "https://task-management-benson-cda7d51e8621.herokuapp.com/"
+const CLIENT_URL = process.env.NODE_ENV==='production'?"https://task-management-benson-cda7d51e8621.herokuapp.com/":'http://localhost:3000';
 
 const router = express.Router();
 
@@ -10,13 +12,11 @@ const router = express.Router();
 router.post('/login', (req, res, next)=>{
   passport.authenticate('local', (err, theUser, failureRedirect)=>{
     if (err) {
-      console.log('first if statement :', err)
       res.status(500).json({ message: 'Something went wrong authenticating user' });
       return;
   }
 
   if (!theUser) {
-      console.log('second if statement')
       res.status(401).json({msg:'user not found'});
       return;
   }
@@ -27,14 +27,12 @@ router.post('/login', (req, res, next)=>{
           res.status(500).json({ message: 'Session save went bad.' });
           return;
       }
-      console.log('---123456789098765432345678---', req.user);
       res.status(200).json({errors: false, user: theUser});
   });
   })(req, res, next);
 });
 
 router.post('/register', async (req, res, next) => {
-  console.log('register babe')
   try {
     const { name, email, password } = req.body;
     const user = new User({ name, email, password });
@@ -44,7 +42,6 @@ router.post('/register', async (req, res, next) => {
       res.status(201).json({user});
     });
   } catch (err) {
-    console.log(err)
     res.status(500).json({msg:err});
   }
 });
